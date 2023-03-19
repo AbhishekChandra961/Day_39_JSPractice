@@ -1,0 +1,45 @@
+function findTriplets(arr) {
+  const triplets = [];
+
+  arr.sort((a, b) => a - b); // sort array in ascending order
+
+  for (let i = 0; i < arr.length - 2; i++) {
+    // fix the first element
+    let left = i + 1; // initialize left pointer
+    let right = arr.length - 1; // initialize right pointer
+
+    while (left < right) {
+      const sum = arr[i] + arr[left] + arr[right];
+
+      if (sum === 0) {
+        triplets.push([arr[i], arr[left], arr[right]]);
+        left++;
+        right--;
+
+        // skip duplicate values
+        while (left < right && arr[left] === arr[left - 1]) {
+          left++;
+        }
+        while (left < right && arr[right] === arr[right + 1]) {
+          right--;
+        }
+      } else if (sum < 0) {
+        left++;
+      } else {
+        right--;
+      }
+    }
+
+    // skip duplicate values
+    while (i < arr.length - 2 && arr[i] === arr[i + 1]) {
+      i++;
+    }
+  }
+
+  return triplets;
+}
+
+// Example usage
+const arr = [1, 0, -1, 2, -3, 4, 5, -2];
+const triplets = findTriplets(arr);
+console.log(`Triplets that add up to zero: ${JSON.stringify(triplets)}`);
